@@ -18,6 +18,7 @@ void sset_free(struct sset* sset);
 char sset_has(struct sset* sset, index_t element);
 void sset_add(struct sset* sset, index_t element);
 void sset_remove(struct sset* sset, index_t element);
+index_t sset_pop(struct sset* sset);
 void sset_print(struct sset* sset);
 
 #endif

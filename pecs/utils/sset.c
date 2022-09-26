@@ -46,6 +46,12 @@ void sset_remove(struct sset* sset, index_t element) {
     sset->sparse[sset->dense[sset->length]] = sset->sparse[element];
 }
 
+index_t sset_pop(struct sset* sset) {
+    assert(sset->length != 0);
+    sset->length--;
+    return sset->dense[sset->length];
+}
+
 void sset_print(struct sset* sset) {
     printf(" dense: ");
     for (index_t i = 0; i < sset->capacity; i++) {

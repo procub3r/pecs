@@ -2,33 +2,19 @@
 #include "pecs.h"
 
 int main() {
-    struct sset s = {.initial_capacity = 4};
-    sset_create(&s);
-    sset_print(&s);
+    struct registry reg;
+    registry_create(&reg);
 
-    sset_add(&s, 3);
-    sset_print(&s);
+    entity_t e0 = entity_create(&reg);
+    entity_t e1 = entity_create(&reg);
+    entity_t e2 = entity_create(&reg);
+    entity_t e3 = entity_create(&reg);
 
-    sset_add(&s, 0);
-    sset_print(&s);
+    entity_destroy(&reg, e2);
+    entity_destroy(&reg, e0);
+    entity_t e4 = entity_create(&reg);
+    entity_t e5 = entity_create(&reg);
+    entity_t e6 = entity_create(&reg);
 
-    sset_add(&s, 4);
-    sset_print(&s);
-
-    sset_add(&s, 1);
-    sset_print(&s);
-
-    sset_remove(&s, 0);
-    sset_print(&s);
-
-    sset_remove(&s, 1);
-    sset_print(&s);
-
-    sset_add(&s, 0);
-    sset_print(&s);
-
-    sset_add(&s, 1);
-    sset_print(&s);
-
-    sset_free(&s);
+    registry_free(&reg);
 }
