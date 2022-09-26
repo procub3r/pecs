@@ -22,6 +22,10 @@ void* list_get(struct list* list, size_t index) {
     return list->raw + index * list->element_size;
 }
 
+void* list_get_last(struct list* list) {
+    return list_get(list, list->length - 1);
+}
+
 void list_add(struct list* list, void* element) {
     if (list->length == list->capacity) {
         list->capacity *= 2;
@@ -35,8 +39,12 @@ void list_add(struct list* list, void* element) {
 void list_remove(struct list* list, size_t index) {
     assert(index < list->length);
     list->length--;
-    // Don't bother memcpy'ing if there is only one element left in the list
-    if (list->length > 1) {
+    // Don't bother memcpy'ing if the element to remove is the last one
+    if (index == list->length) {
         memcpy(list_get(list, index), list_get(list, list->length), list->element_size);
     }
+}
+
+void list_remove_last(struct list* list) {
+    list_remove(list, list->length - 1);
 }

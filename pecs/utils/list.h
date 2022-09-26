@@ -14,6 +14,7 @@ struct list {
 void list_create(struct list* list);
 void list_free(struct list* list);
 void* list_get(struct list* list, size_t index);
+void* list_get_last(struct list* list);
 void list_add(struct list* list, void* element);
 void list_remove(struct list* list, size_t index);
 

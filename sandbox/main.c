@@ -1,27 +1,51 @@
 #include <stdio.h>
 #include "pecs.h"
+#include "components.h"
 
-struct component {
-    int x, y, w, h;
-    char* name;
+struct registry reg = {
+    COMPONENT_REG(Health),
+    COMPONENT_REG(Tag),
+    COMPONENT_REG(Position),
+    COMPONENT_REG(BoxCollider),
+    COMPONENT_REG(Texture),
 };
 
-int main() {
-    struct list list = {
-        .element_size = sizeof(struct component),
-        .initial_capacity = 4
-    };
-    list_create(&list);
-    list_add(&list, &(struct component){.x = 1, .y = 2, .w = 3, .h = 4, .name = "FIRST"});
-    list_add(&list, &(struct component){.x = 2, .y = 3, .w = 4, .h = 5, .name = "SECON"});
-    list_add(&list, &(struct component){.x = 3, .y = 4, .w = 5, .h = 6, .name = "THIRD"});
-    list_add(&list, &(struct component){.x = 4, .y = 5, .w = 6, .h = 7, .name = "FOURT"});
-    list_add(&list, &(struct component){.x = 5, .y = 6, .w = 7, .h = 8, .name = "FIFTH"});
-    list_remove(&list, 2);
+entity_t make_obstacle(int x, int y, int w, int h) {
+    entity_t e = entity_create(&reg);
 
-    for (int i = 0; i < list.length; i++) {
-        struct component* c = list_get(&list, i);
-        printf("%d, %d, %d, %d, %s\n", c->x, c->y, c->w, c->h, c->name);
-    }
-    list_free(&list);
+    Position* pos = component_add(&reg, e, Position);
+    pos->x = x;
+    pos->y = y;
+
+    Tag* t = component_add(&reg, e, Tag);
+    t->name = "obstacle";
+
+    BoxCollider* b = component_add(&reg, e, BoxCollider);
+    b->x = x;
+    b->y = y;
+    b->w = w;
+    b->h = h;
+
+    return e;
+}
+
+void print_obstacle(entity_t obstacle) {
+    Tag* t = component_get(&reg, obstacle, Tag);
+    Position* p = component_get(&reg, obstacle, Position);
+    BoxCollider* b = component_get(&reg, obstacle, BoxCollider);
+    printf("tag: %s; pos: %d, %d; box collider: %d, %d, %d, %d\n", t->name, p->x, p->y, b->x, b->y, b->w, b->h);
+}
+
+int main() {
+    registry_create(&reg);
+
+    entity_t obstacle0 = make_obstacle(1337, 42, -255, 256);
+    entity_t obstacle1 = make_obstacle(1, -1, 1, -1);
+    entity_t obstacle2 = make_obstacle(-2, 2, -2, 2);
+
+    print_obstacle(obstacle0);
+    print_obstacle(obstacle1);
+    print_obstacle(obstacle2);
+
+    registry_free(&reg);
 }
