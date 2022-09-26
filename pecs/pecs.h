@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "utils/sset.h"
+#include "utils/list.h"
 
 // Generate Component ID from Component Type
 #define COMPONENT_ID(T) PECS_COMPONENT_ID_##T
